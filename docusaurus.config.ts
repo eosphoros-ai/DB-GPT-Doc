@@ -3,16 +3,19 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
-  favicon: "img/favicon.ico",
-  url: "https://your-docusaurus-site.example.com",
+  title: "DB-GPT",
+  tagline: "Revolutionizing Database Interactions with Private LLM Technology",
+  favicon: "img/eosphoros.jpeg",
+  url: "http://dbgpt.site",
   baseUrl: "/",
-  organizationName: "facebook",
-  projectName: "docusaurus",
-  onBrokenLinks: "throw",
+  organizationName: "eosphoros-ai",
+  projectName: "DB-GPT",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
-
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en"],
+  },
   themes: [
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),
@@ -57,6 +60,7 @@ const config: Config = {
         alt: "DB-GPT Logo",
         src: "img/dbgpt_logo.png",
         srcDark: "img/DB-GPT_LOGO_White.png",
+        href: "https://dbgpt.site/",
       },
       items: [
         {
@@ -84,31 +88,31 @@ const config: Config = {
       ],
     },
     footer: {
-      style: "dark",
+      style: "light",
       links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/docs/overview",
-            },
-          ],
-        },
         {
           title: "Community",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
               label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
+              href: "https://discord.gg/erwfqcMP",
             },
             {
-              label: "Twitter",
-              href: "https://twitter.com/docusaurus",
+              label: "Dockerhub",
+              href: "https://hub.docker.com/u/eosphorosai",
+            },
+          ],
+        },
+        {
+          title: "Github",
+          items: [
+            {
+              label: "Github",
+              href: "https://github.com/eosphoros-ai/DB-GPT",
+            },
+            {
+              label: "HuggingFace",
+              href: "https://huggingface.co/eosphoros",
             },
           ],
         },
@@ -116,17 +120,17 @@ const config: Config = {
           title: "More",
           items: [
             {
-              label: "Blog",
-              to: "/blog",
+              label: "Hacker News",
+              href: "https://news.ycombinator.com/item?id=36038815",
             },
             {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              label: "Twitter",
+              href: "https://twitter.com/DbGpt80100",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} DB-GPT`,
     },
     prism: {
       theme: prismThemes.github,
