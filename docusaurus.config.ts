@@ -12,10 +12,6 @@ const config: Config = {
   projectName: "docusaurus",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
-  },
 
   themes: [
     [
@@ -50,6 +46,12 @@ const config: Config = {
 
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
+    docs: {
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: true,
+      },
+    },
     navbar: {
       logo: {
         alt: "DB-GPT Logo",
@@ -59,10 +61,17 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docs",
           position: "left",
           label: "Docs",
           to: "/docs/overview",
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "use_case",
+          position: "left",
+          label: "Use Case",
+          to: "/docs/use_cases/sql_generation_and_diagnosis",
         },
         // Please keep GitHub link to the right for consistency.
 
@@ -82,7 +91,7 @@ const config: Config = {
           items: [
             {
               label: "Tutorial",
-              to: "/docs/intro",
+              to: "/docs/overview",
             },
           ],
         },
