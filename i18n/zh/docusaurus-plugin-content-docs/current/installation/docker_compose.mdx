@@ -1,0 +1,27 @@
+# Docker-Compose 部署
+
+## 通过 Docker-Compose 运行
+
+```python
+$ docker compose -d
+--------------------------------------------------
+[+] Building 0. s (0/0)
+[+] 运行2/2
+✔️ Container db-gpt-db-1 启动0。 s
+✔️ Container db-gpt-webserver-1 启动
+```
+
+## 查看日志
+
+```python
+$ docker 日志 db-gpt-webserver -1 -f
+```
+
+:::info 备注
+
+要了解更多配置内容，您可以查看 `docker-compose.yml` 文件
+:::
+
+## 访问
+
+打开浏览器并访问 \<http://localhost:5000\>

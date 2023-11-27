@@ -1,0 +1,124 @@
+# 单独部署
+
+## 准备工作
+
+```python
+# 下载源代码
+$ git clone https://github.com/eosphoros-ai/DB-GPT.git
+
+$ cd DB-GPT
+```
+
+## 环境安装
+
+```python
+# 创建虚拟环境
+$ conda 创建 -n dbgpt_env python=3.10
+
+# 激活虚拟环境
+$ conda 激活 dbgpt_env
+```
+
+## 安装依赖项
+
+```python
+pip install -e ".[default]"
+```
+
+## 模型下载
+
+下载LLM和嵌入模型
+
+:::info 备注
+
+⚠️ If there are no GPU resources, it is recommended to use the proxy model, such as OpenAI, Qwen, ERNIE Bot, etc.
+:::
+
+```python
+$ mkdir model&& cd models
+
+# 下载嵌入模型，例如 text2vec-large-chinese
+$ git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+```
+
+:::tip
+
+设置代理 API 并修改 `.env`configuration
+ ::: :
+
+```python
+#set LLM_MODEL TYPE
+LLM_MODEL=proxyllm
+#set your Proxy Api key and Proxy Server url
+PROXY_API_KEY={your-openai-sk}
+PROXY_SERVER_URL=https://api.openai.com/v1/chat/completions
+```
+
+:::info 备注
+⚠️ 如果你有 GPU 资源, 你可以使用本地模型来部署
+:::
+
+```python
+$ mkdir model&& cd models
+
+# # 下载嵌入模型，例如 vicuna-13b-v1.5 或  
+$ git clone https://huggingface.co/lmsyss/vicuna-13b-v1。
+
+# 下载嵌入模型，例如 text2vec-large-chinese
+$git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+
+$popd
+
+```
+
+## 命令行启动
+
+```python
+LLM_MODEL=vicuna-13b-v1.5 
+dbgpt start webserver --端口 6006
+```
+
+默认情况下，`dbgpt 启动webserver command` 将通过单个Python进程启动`webserver`、`model controller`和`model worker` 。 在上述命令中，指定了端口 `6006`。
+
+## 查看并验证服务模型
+
+:::tip
+查看和显示所有模型服务
+:::
+
+```python
+dbgpt 模型列表 
+```
+
+```python
+# result
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+|    Model Name   | Model Type |    Host    | Port | Healthy | Enabled | Prompt Template |       Last Heartbeat       |
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+| vicuna-13b-v1.5 |    llm     | 172.17.0.9 | 6006 |   True  |   True  |                 | 2023-10-16T19:49:59.201313 |
+|  WorkerManager  |  service   | 172.17.0.9 | 6006 |   True  |   True  |                 | 2023-10-16T19:49:59.246756 |
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+
+```
+
+`WorkerManager`是`Model Workers`的管理过程'
+
+:::tip
+检查并验证使用的模型
+:::
+
+```python
+dbgpt 模型聊天 --model_name vicuna-13b-v1.5
+```
+
+上述命令将启动一个交互式页面，以便您能够通过终端与模型进行交谈。
+
+```python
+Chatbot started with model vicuna-13b-v1.5. Type 'exit' to leave the chat.
+
+
+You: Hello
+Bot: Hello! How can I assist you today?
+
+You: 
+```

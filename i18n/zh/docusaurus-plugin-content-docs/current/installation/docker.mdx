@@ -1,0 +1,123 @@
+# Docker 部署
+
+## Docker 图像准备
+
+有两种方法来准备Docker图像。 1. 从官方图片中拉出 2。 本地构建。 在实际使用期间，您可以**选择一个**。
+
+1.从官方图像仓库拉取[Eosphoros AI Docker Hub](https://hub.docker.com/u/eosphorosai)
+
+```python
+Docker puleosphorosai/dbgpt:latest
+```
+
+2.本地构建(可选)
+
+```python
+bash docker/build_all_images.sh
+```
+
+检查Docker图像
+
+```python
+# 命令
+停靠图像 | grep "eosphorosai/dbgpt"
+
+# 结果
+--------------------------------------------------------------------------------------
+eosphorosai/dbgpt-allinone 最新的 349d49726588 秒前 15 秒前 GB
+eosphorosai/dbgpt 最新的eb3cdc5b4ead 大约1分钟前 14.5GB
+```
+
+`eosphorosai/dbgpt`是基础图像，它包含项目依赖关系和 sqlite 数据库。 `eosphorosai/dbgpt-allinone`图像是从`eosphorosai/dbgpt`生成的，其中包含 MySQL 数据库。 当然，除了拉取Docker图像外，该项目还提供Docker文件文件，这些文件可以直接通过DB-GPT的脚本构建。 这里是构建命令：
+
+```python
+bash docker/build_all_images.sh
+```
+
+使用时，您需要指定特定参数。 以下是指定参数构造的示例：
+
+```python
+bash docker/build_all_images.sh \
+--base-image nvidia/cuda:11.8.0-runtime-ubuntu22.04 \
+--pip-index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+--language zh
+```
+
+你可以通过命令`bash docker/build_all_images.sh --help` 查看特定的用法
+
+## 运行停靠容器
+
+### 通过 Sqlite 数据库运行
+
+```python
+docker run --ipc host --gpus all -d \
+-p 5000:5000 \
+-e LOCAL_DB_TYPE=sqlite \
+-e LOCAL_DB_PATH=data/default_sqlite.db \
+-e LLM_MODEL=vicuna-13b-v1.5 \
+-e LANGUAGE=zh \
+-v /data/models:/app/models \
+--name dbgpt \
+eosphorosai/dbgpt
+```
+
+打开浏览器并访问 \<http://localhost:5000\>
+
+-   `-e LLM_MODEL=vicuna-13b-v1.5`，意味着基础模型使用 `vicuna-13b-v1.5`。 欲了解更多模型使用情况，您可以在 `/pilot/configs/model_config.LLM_MODEL_CONFIG` 中查看配置。
+-   `-v /data/model:/app/model`, 指定要挂载的模型文件。 目录`/data/model`挂载在容器的`/app/model`中。 当然，它可以用其他途径代替。
+
+容器启动后，您可以通过以下命令查看日志
+
+```python
+停靠日志 dbgpt -f
+```
+
+### 通过 MySQL 数据库运行
+
+```python
+docker run --ipc host --gpus all -d -p 3306:3306 \
+-p 5000:5000 \
+-e LOCAL_DB_HOST=127.0.0.1 \
+-e LOCAL_DB_PASSWORD=aa123456 \
+-e MYSQL_ROOT_PASSWORD=aa123456 \
+-e LLM_MODEL=vicuna-13b-v1.5 \
+-e LANGUAGE=zh \
+-v /data/models:/app/models \
+--name db-gpt-allinone \
+db-gpt-allinone
+```
+
+打开浏览器并访问 \<http://localhost:5000\>
+
+-   `-e LLM_MODEL=vicuna-13b-v1.5`，意味着基础模型使用 `vicuna-13b-v1.5`。 欲了解更多模型使用情况，您可以在 `/pilot/configs/model_config.LLM_MODEL_CONFIG` 中查看配置。
+-   `-v /data/model:/app/model`, 指定要挂载的模型文件。 目录`/data/model`挂载在容器的`/app/model`中。 当然，它可以用其他途径代替。
+
+容器启动后，您可以通过以下命令查看日志
+
+```python
+停靠日志 db-gpt-allinone -f
+```
+
+### 通过 OpenAI 代理模型运行
+
+```python
+PROXY_API_KEY="You api key"
+PROXY_SERVER_URL="https://api.openai.com/v1/chat/completions"
+docker run --gpus all -d -p 3306:3306 \
+-p 5000:5000 \
+-e LOCAL_DB_HOST=127.0.0.1 \
+-e LOCAL_DB_PASSWORD=aa123456 \
+-e MYSQL_ROOT_PASSWORD=aa123456 \
+-e LLM_MODEL=proxyllm \
+-e PROXY_API_KEY=$PROXY_API_KEY \
+-e PROXY_SERVER_URL=$PROXY_SERVER_URL \
+-e LANGUAGE=zh \
+-v /data/models/text2vec-large-chinese:/app/models/text2vec-large-chinese \
+--name db-gpt-allinone \
+db-gpt-allinone
+```
+
+-   `-e LLM_MODEL=proxyllm`, 设置模型为第三方模型服务 API, 它可以是 openai 或 fastchat 接口。
+-   `-v /data/models/text2vec-large-ma-e:/app/models/text2vec-large-mida`, 设置知识库嵌入模型到 `text2vec`
+
+打开浏览器并访问 \<http://localhost:5000\>

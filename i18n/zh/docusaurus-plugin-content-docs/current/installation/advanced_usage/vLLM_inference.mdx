@@ -1,0 +1,22 @@
+# vLM 提示
+
+DB-GPT 支持 [vLLM](https://github.com/vllm-project/vllm) 推断，一个快速易用的 LLM 推理和服务库。
+
+## 安装依赖项
+
+`vLLM` 是 DB-GPT 中的可选依赖项。 您可以通过以下命令手动安装它。
+
+```python
+$ pip安装-e ".[vllm]"
+```
+
+## 修改配置文件
+
+在 `.env` 配置文件中，修改模型的内向类型以开始`vllm` 作为推断。
+
+```python
+LLM_MODEL=vicuna-13b-v1.5
+MODEL_TYPE=vllm
+```
+
+欲了解更多关于“vLLM”支持的模型列表的信息，请参阅[vLM支持的模型文档](https://docs.vllm.ai/en/models/supported_models.html#supported-models)。

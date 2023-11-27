@@ -1,0 +1,383 @@
+# 源代码部署
+
+## 环境要求
+
+| Startup Mode         | CPU \* MEM    | GPU      | 评议                                            |
+| -------------------- | ------------- | -------- | --------------------------------------------- |
+| 代理模型                 | 4C \* 8G      | 无        | 代理模型不依靠GPU                                    |
+| 本地模型                 | 8C \* 32G     | 24G      | 最好以24G或以上的 GPU 在本地启动                          |
+
+### 下载源代码
+
+:::tip
+下载 DB-GPT
+:::
+
+```python
+git clone https://github.com/eosphoros-ai/DB-GPT.git
+```
+
+### Miniconda环境安装
+
+-   默认数据库使用 SQLite，所以不需要在默认启动模式下安装数据库。 如果您需要使用其他数据库，您可以阅读下面的[高级教程](/docs/operation_manual/advanced_tutorial)。 我们建议通过 conda 虚拟环境安装 Python 虚拟环境。 关于Miniconda环境的安装，请参阅[Miniconda安装教程]\(https://docs.conda.io/projects/miniconda/en/
+
+:::tip
+创建 Python 虚拟环境
+:::
+
+```python
+python >= 3.10
+conda create -n dbgpt_env python=3。 0
+conda 激活 dbgpt_env
+
+# 这将需要几分钟
+pip install -e ".[default]"
+```
+
+:::tip
+复制环境变量
+:::
+
+```python
+cp .env.template .env
+```
+
+## 部署模型
+
+DB-GPT 可以通过代理模型或在GPU 环境下作为一个私人本地模型部署在使用较低硬件的服务器上。 如果您的硬件配置低，您可以使用第三方大型语言模型 API 服务，例如OpenAI、Azure、Qwen、ERNIEBot等。
+
+:::info 备注
+
+⚠️ 您需要确保安装 git-lfs
+
+```python
+● CentOS 安装: yum install git-lfs
+● Ubuntu 安装: apt-get install git-lfs
+● MacOS 安装: brew install git-lfs
+```
+
+:::
+
+### 代理模型
+
+#### OpenAI
+
+安装依赖项
+
+```python
+pip install -e ".[openai]"
+```
+
+下载嵌入模型
+
+```python
+cd DB-GPT
+mkdir 模型和 cd 模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+```
+
+配置代理并修改 LLM_MODEL, PROXY_API_URL 和 API_KEY 在 `.env`file
+
+```python
+# .env
+LLM_MODEL=chatgpt_proxyllm
+PROXY_API_KEY={your-openai-sk}
+PROXY_SERVER_URL=https://api.openai.com/v1/chat/completions
+```
+
+#### Qwen
+
+安装依赖项
+
+```python
+pip 安装仪表范围
+```
+
+下载嵌入模型
+
+```python
+cd DB-GPT
+mkdir 模型和cd model
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+或
+git clone https://huggingface.co/moka-ai/m3e-large
+```
+
+配置代理并修改 LLM_MODEL, PROXY_API_URL 和 API_KEY 在 `.env`file
+
+```python
+# .env
+# Aliyun tongyiqianwen
+LLM_MODEL=tongyi_proxyllm
+TONGYI_PROXY_API_KEY={your-tongyi-sk}
+PROXY_SERVER_URL={your_service_url}
+```
+
+#### 聊天GLM
+
+安装依赖项
+
+```python
+pip install zhipuai
+```
+
+下载嵌入模型
+
+```python
+cd DB-GPT
+mkdir 模型和cd model
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+或
+git clone https://huggingface.co/moka-ai/m3e-large
+```
+
+配置代理并修改 LLM_MODEL, PROXY_API_URL 和 API_KEY 在 `.env`file
+
+```python
+# .env
+LLM_MODEL=zhipu_proxyllm
+PROXY_SERVER_URL={your_service_url}
+ZHIPU_MODEL_VERSION={version}
+ZHIPU_PROXY_API_KEY={your-zhipu-sk}
+```
+
+#### ERNIE Bot
+
+下载嵌入模型
+
+```python
+cd DB-GPT
+mkdir 模型和cd model
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+或
+git clone https://huggingface.co/moka-ai/m3e-large
+```
+
+配置代理并修改 LLM_MODEL, PROXY_API_URL 和 API_KEY 在 `.env`file
+
+```python
+# .env
+LLM_MODEL=zhipu_proxyllm
+PROXY_SERVER_URL={your_service_url}
+ZHIPU_MODEL_VERSION={version}
+ZHIPU_PROXY_API_KEY={your-zhipu-sk}
+```
+
+:::info 备注
+
+⚠️ 小心不要覆盖`.env`配置文件
+ 的内容::
+
+### 本地模型
+
+#### Vicuna
+
+##### 硬件要求描述
+
+```python
+	|-------------------|--------------|----------------|
+	| Model    		    |   Quantize   |  VRAM Size   	| 
+    |------------------ |--------------|----------------|
+    |Vicuna-7b-1.5     	|   4-bit      |  8GB         	|
+    |-------------------|--------------|----------------|
+    |Vicuna-7b-1.5 		|   8-bit	   |  12GB        	|
+    |-------------------|--------------|----------------|
+    |vicuna-13b-v1.5   	|   4-bit      |  12GB        	|
+    |-------------------|--------------|----------------|
+    |vicuna-13b-v1.5    |   8-bit      |  24GB          |
+    |-------------------|--------------|----------------|
+
+```
+
+##### 下载LLM
+
+```python
+cd DB-GPT
+mkdir 模型和 cd 模型
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+noted
+git clone https://huggingface o/moka-ai/m3e-large
+
+# llm 模型，如果您使用 openai 或 Azure 或 tongyi llm api 服务 您不需要下载 llm model
+git clone https://huggingface o/lmsys/vicuna-13b-v1.5
+
+```
+
+##### 环境变量配置，配置 `.env` 文件中的LLM_MODEL 参数
+
+```python
+# .env
+LLLM_MODEL=vicuna-13b-v1.5
+```
+
+#### Baichuan
+
+##### 硬件要求描述
+
+```python
+|-------------------|--------------|----------------|
+| Model    		    |   Quantize   |  VRAM Size   	| 
+|------------------ |--------------|----------------|
+|baichuan-7b     	|   4-bit      |  8GB         	|
+|-------------------|--------------|----------------|
+|baichuan-7b  		|   8-bit	   |  12GB          |
+|-------------------|--------------|----------------|
+|baichuan-13b     	|   4-bit      |  12GB        	|
+|-------------------|--------------|----------------|
+|baichuan-13b       |   8-bit      |  20GB          |
+|-------------------|--------------|----------------|
+
+
+```
+
+##### 下载LLM
+
+```python
+cd DB-GPT
+mkdir 模型和 cd 模型
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+noted
+git clone https://huggingface o/moka-ai/m3e-larger
+
+# llm model
+git clone https://huggingface.co/baichuan-inc/Baichuan2-7B-Chat
+through stic
+git clone https://huggingface.co/baichuan-inc/Baichuan2-13B-Chat
+
+```
+
+##### 环境变量配置，配置 `.env` 文件中的LLM_MODEL 参数
+
+```python
+# .env
+LLLM_MODEL=baichuan2-13b
+```
+
+#### ChagtGLM
+
+##### 硬件要求描述
+
+```python
+|-------------------|--------------|----------------|
+| Model    		    |   Quantize   |  VRAM Size   	| 
+|------------------ |--------------|----------------|
+|ChatGLM-6b     	|   4-bit      |  7GB         	|
+|-------------------|--------------|----------------|
+|ChatGLM-6b 	  	|   8-bit	   |  9GB           |
+|-------------------|--------------|----------------|
+|ChatGLM-6b       	|   FP16       |  14GB        	|
+|-------------------|--------------|----------------|
+
+
+```
+
+##### 下载LLM
+
+```python
+cd DB-GPT
+mkdir 模型和 cd 模型
+
+# 嵌入模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
+或
+git clone https://huggingface o/moka-ai/m3e-large
+
+# llm model
+git clone https://huggingface.co/THUDM/chatglm2-6b
+
+```
+
+##### 环境变量配置，配置 `.env` 文件中的LLM_MODEL 参数
+
+```python
+# .env
+LLLM_MODEL=chatglm2-6b
+```
+
+### llama.cpp(CPU)
+
+:::info 备注
+⚠️ llama.cpp 可以在 Mac M1 或 Mac M2 上运行
+:::
+
+DB-GPT还支持成本较低的推论框架llama.cp，可通过llama-cpp-python使用。
+
+#### 文件编写
+
+在使用 llama.cp之前，您首先需要以gguf 格式编写模型文件。 有两种方法获得它。 您可以选择一个方法来获取相应的文件。
+
+:::tip
+方法1：下载转换的模型
+:::
+
+如果您想要使用 [Vicuna-13b-v1.5](https://huggingface.co/lmsyss/vicuna-13b-v1.5)，您可以下载转换的文件 [TheBloke/vicuna-13B-v1.5-GGUF](https://huggingface.co/TheBloke/vicuna-13B-v1.5-GGUF)，只需要这个文件。 下载文件并将其放入模型路径。 您需要将模型重命名为`gml-model-q4_0.gguf`。
+
+```python
+wget https://huggingface.co/TheBloke/vicuna-13B-v1.5-GGUF/resolve/main/vicuna-13b-v1.5.Q4_K_M.gguf - O models/gml-model-q4_0.gguf
+```
+
+:::tip
+方法2：转换您自己的文件
+:::
+
+#### 安装依赖项
+
+llama.cpp 是 DB-GPT 中的一个可选安装项。 您可以用以下命令安装它。
+
+```python
+pip install -e ".[llama_cpp]"
+```
+
+#### 修改配置文件
+
+修改`.env`文件以使用 llama.cpp，然后你可以运行 [command](/docs/quickstart.mdx)
+
+#### 更多描述
+
+| 环境变量                                | 默认值                | 描述                                                                                                        |
+| ----------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
+| `llama_cpp_prompt_template`         | 无                  | 提示模板现在支持 `zero_shot, vicuna_v1.1,alpaca,llama-2,baichuan-chat,internlm-chat`。 如果没有，模型提示模板可以根据模型路径自动获得。    |
+| `llama_cpp_model_path`              | 无                  | 模型路径                                                                                                      |
+| `llama_cpp_n_gpu_layers`            | 1000000000         | 要传输到 GPU 的网络图层，将其设置为 100 000 000，可以将所有图层传输到 GPU 。 如果您的 GPU 内存偏低，您可以设置一个较低的数字，例如10。                        |
+| `llama_cpp_n_threads`               | 无                  | 要使用的线程数。 如果没有，主题数将自动确定。                                                                                   |
+| `llama_cpp_n_batch`                 | 512                | 调用 llama_eval 时将批处理的提示符的最大数量                                                                              |
+| `llama_cpp_n_gqa`                   | 无                  | 对于llama-2 70B 模型，群组查询注意力必须为8。                                                                             |
+| `llama_cpp_rms_norm_eps`            | 5e-06              | 对于llama-2型号来说，5e-6是一个很好的价值。                                                                               |
+| `llama_cpp_cache_capacity`          | 无                  | 最大模型缓存大小。 例如：2000MiB, 2GiB                                                                                |
+| `llama_cpp_prefer_cpu`              | 错误                 | 如果可用的 GPU ，除非配置了首选的 cpu=False 则默认首先使用 GPU 。                                                               |
+
+## 测试数据(可选)
+
+DB-GPT 项目默认有一部分测试数据内置， 可以加载到本地数据库通过以下命令进行测试
+
+-   Linux
+
+```python
+bash ./scripts/examples/load_examples.sh
+
+```
+
+-   窗口
+
+```python
+.\scripts\exampes\load_examples.bat
+```
+
+## 运行服务
+
+DB-GPT 服务已打包到服务器，整个DB-GPT 服务可以通过以下命令启动。
+
+```python
+python pilot/server/dbgpt_server.py
+
+```

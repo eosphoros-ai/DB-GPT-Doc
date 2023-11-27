@@ -1,0 +1,60 @@
+# OpenAI SDK 本地多模型调用
+
+多型服务的呼叫与 OpenAI 接口兼容，部署在 DB-GPT 中的模型可以通过 OpenAI SDK 直接调用。 
+
+:::info 备注
+
+⚠️ 在使用此项目之前，您必须首先部署可以通过[集群部署教程]进行部署的模型服务(/docs/installation/model_service/cluster)。
+:::
+
+## 启动apiserver
+
+部署模型服务后，您需要启动 API 服务器。 默认情况下，模型 API 服务器使用端口 `8100`开始。
+
+```python
+dbgpt 启动 apiserver --controller_addr http://127.0.0.1:8000 --api_keys EMPTY
+
+```
+
+## 验证
+
+### cURL 验证
+
+在apiserver启动后，服务呼叫可以被验证。 首先，让我们看看通过曲线进行的验证。
+
+:::tip
+列出模型
+:::
+
+```python
+curl http://127.0.0.1:8100/api/v1/model\
+-H "Authorization: Morer EMPTY" \
+-H "Content-Type: application/json"
+```
+
+:::tip
+聊天
+:::
+
+```python
+curl http://127.0.0.1:8100/api/v1/chat/complitions
+-H "Authorization: Werer EMPTY"
+-H "Content-Type: application/json"
+-d '{"model": "vicuna-13b-v1.5", "messages": [{"role": "user", "content": "hello"}]}'
+```
+
+## 通过 OpenAI SDK 验证
+
+```python
+import openai
+openai.api_key = "EMPTY"
+openai.api_base = "http://127.0.0.1:8100/api/v1"
+model = "vicuna-13b-v1.5"
+
+completion = openai.ChatCompletion.create(
+  model=model,
+  messages=[{"role": "user", "content": "hello"}]
+)
+# print the completion
+print(completion.choices[0].message.content)
+```

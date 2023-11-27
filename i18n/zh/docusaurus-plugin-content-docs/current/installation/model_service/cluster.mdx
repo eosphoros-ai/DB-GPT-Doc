@@ -1,0 +1,266 @@
+# 集群部署
+
+## 安装命令行工具
+
+所有以下操作都通过 "dbgpt " 命令完成。 要使用 `dbgpt` 命令，您首先需要安装 `DB-GPT` 项目。 您可以通过以下命令安装它
+
+```python
+$ pip安装-e ".[default]"
+```
+
+它也可以用于脚本模式
+
+```python
+$ python pilot/scripts/cli_scripts.py
+```
+
+## 启动模型控制器
+
+```python
+$ dbgpt 启动控制器
+```
+
+## 查看日志
+
+```python
+$ docker 日志 db-gpt-webserver -1 -f
+```
+
+默认情况下，`Model Server` 将在端口 `8000` 中启动
+
+## 启动模型工人
+
+:::tip
+启动 `chatglm2-6b` 模型Worker
+:::
+
+```python
+dbgpt start worker --model_name chatglm2-6b
+--model_path /app/models/chatglm2-6b
+--端口 8001
+--controller_addr http://127.0.1:8000
+```
+
+:::tip
+启动 `vicuna-13b-v1.5` 模型Worker
+:::
+
+```python
+dbgpt start worker --model_name vicuna-13b-v1.5 \
+--model_path /app/models/vicuna-13b-v1.5 \
+--端口 8002
+--controller_addr http://127.0.1:8000
+```
+
+:::info 备注
+
+:::
+
+## 启动嵌入式模型服务
+
+```python
+dbgpt start worker --model_name text2vec \
+--model_path /app/models/text2vec-large-chinese \
+--worker_text2vec
+--port 8003 \
+--controller_addr http://127.0.1:8000
+```
+
+:::info 备注
+
+:::
+
+:::tip
+查看和检查部署的模型
+:::
+
+```python
+$ dbgpt model list
+
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+|    Model Name   | Model Type |    Host    | Port | Healthy | Enabled | Prompt Template |       Last Heartbeat       |
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+|   chatglm2-6b   |    llm     | 172.17.0.2 | 8001 |   True  |   True  |                 | 2023-09-12T23:04:31.287654 |
+|  WorkerManager  |  service   | 172.17.0.2 | 8001 |   True  |   True  |                 | 2023-09-12T23:04:31.286668 |
+|  WorkerManager  |  service   | 172.17.0.2 | 8003 |   True  |   True  |                 | 2023-09-12T23:04:29.845617 |
+|  WorkerManager  |  service   | 172.17.0.2 | 8002 |   True  |   True  |                 | 2023-09-12T23:04:24.598439 |
+|     text2vec    |  text2vec  | 172.17.0.2 | 8003 |   True  |   True  |                 | 2023-09-12T23:04:29.844796 |
+| vicuna-13b-v1.5 |    llm     | 172.17.0.2 | 8002 |   True  |   True  |                 | 2023-09-12T23:04:24.597775 |
++-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
+```
+
+## 使用模型服务
+
+上面部署的模型服务可以通过 dbgpt_server使用。 首先修改`.env`配置文件以更改连接模型地址
+
+```python
+dbgpt 启动web服务器 --light
+```
+
+## 启动Web服务器
+
+```python
+LLM_MODEL=vicuna-13b-v1.5
+# 当前默认的 MODEL_SERVER 地址是Model Controller
+MODEL_SERVER=http://127.0.1:8000
+```
+
+`--light` 表示不启动嵌入式模型服务。
+
+或者它可以直接通过命令来生成模型。
+
+```python
+LLM_MODEL=chatglm2-6b dbgpt 启动 webserver --light
+```
+
+## 命令行使用情况
+
+欲了解更多关于使用命令行的信息，您可以查看命令行帮助。 以下是一个参考例子。
+
+:::tip
+查看 dbgpt 帮助 `dbgpt --help`
+:::
+
+```python
+dbgpt --help
+
+已经连接 'dbgpt'
+用法：dbgpt [OPTIONS] COMMAND [ARGS]...
+
+选项：
+  --loglevel TEXT 日志级别
+  --version 显示版本并退出
+  --help 显示此消息并退出
+
+命令：
+  安装依赖，插件等。
+  知识知识库命令行工具
+  管理模型的
+  启动特定服务器。
+  停止启动特定服务器。
+  跟踪分析和可视化痕迹。
+```
+
+:::tip
+检查 dbgpt 开始命令 `dbgpt start --help`
+:::
+
+```python
+dbgpt start --help
+
+Already connect 'dbgpt'
+Usage: dbgpt start [OPTIONS] COMMAND [ARGS]...
+
+  Start specific server.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  apiserver   Start apiserver
+  controller  Start model controller
+  webserver   Start webserver(dbgpt_server.py)
+  worker      Start model worker
+(dbgpt_env) magic@B-4TMH9N3X-2120 ~ %
+```
+
+:::tip
+查看 dbgpt 起始模型服务帮助命令 `dbgpt 开始工作人员--help`
+:::
+
+```python
+dbgpt start worker --help
+
+Already connect 'dbgpt'
+Usage: dbgpt start worker [OPTIONS]
+
+  Start model worker
+
+Options:
+  --model_name TEXT               Model name  [required]
+  --model_path TEXT               Model path  [required]
+  --worker_type TEXT              Worker type
+  --worker_class TEXT             Model worker class,
+                                  pilot.model.cluster.DefaultModelWorker
+  --model_type TEXT               Model type: huggingface, llama.cpp, proxy
+                                  and vllm  [default: huggingface]
+  --host TEXT                     Model worker deploy host  [default: 0.0.0.0]
+  --port INTEGER                  Model worker deploy port  [default: 8001]
+  --daemon                        Run Model Worker in background
+  --limit_model_concurrency INTEGER
+                                  Model concurrency limit  [default: 5]
+  --standalone                    Standalone mode. If True, embedded Run
+                                  ModelController
+  --register                      Register current worker to model controller
+                                  [default: True]
+  --worker_register_host TEXT     The ip address of current worker to register
+                                  to ModelController. If None, the address is
+                                  automatically determined
+  --controller_addr TEXT          The Model controller address to register
+  --send_heartbeat                Send heartbeat to model controller
+                                  [default: True]
+  --heartbeat_interval INTEGER    The interval for sending heartbeats
+                                  (seconds)  [default: 20]
+  --log_level TEXT                Logging level
+  --log_file TEXT                 The filename to store log  [default:
+                                  dbgpt_model_worker_manager.log]
+  --tracer_file TEXT              The filename to store tracer span records
+                                  [default:
+                                  dbgpt_model_worker_manager_tracer.jsonl]
+  --tracer_storage_cls TEXT       The storage class to storage tracer span
+                                  records
+  --device TEXT                   Device to run model. If None, the device is
+                                  automatically determined
+  --prompt_template TEXT          Prompt template. If None, the prompt
+                                  template is automatically determined from
+                                  model path, supported template: zero_shot,vi
+                                  cuna_v1.1,llama-2,codellama,alpaca,baichuan-
+                                  chat,internlm-chat
+  --max_context_size INTEGER      Maximum context size  [default: 4096]
+  --num_gpus INTEGER              The number of gpus you expect to use, if it
+                                  is empty, use all of them as much as
+                                  possible
+  --max_gpu_memory TEXT           The maximum memory limit of each GPU, only
+                                  valid in multi-GPU configuration
+  --cpu_offloading                CPU offloading
+  --load_8bit                     8-bit quantization
+  --load_4bit                     4-bit quantization
+  --quant_type TEXT               Quantization datatypes, `fp4` (four bit
+                                  float) and `nf4` (normal four bit float),
+                                  only valid when load_4bit=True  [default:
+                                  nf4]
+  --use_double_quant              Nested quantization, only valid when
+                                  load_4bit=True  [default: True]
+  --compute_dtype TEXT            Model compute type
+  --trust_remote_code             Trust remote code  [default: True]
+  --verbose                       Show verbose output.
+  --help                          Show this message and exit.
+```
+
+:::tip
+查看 dbgpt 模型服务相关命令 `dbgpt model --help`
+:::
+
+```python
+dbgpt model --help
+
+
+已经连接 'dbgpt'
+用法：dbgpt model [OPTIONS] COMMAND [ARGS]...
+
+  管理模型的
+
+选项：
+  --address 要连接的模型控制器的TEXT 地址。 只需支持
+                  轻型部署模式 如果环境变量
+                  CONTROLER_ADDRES已配置， 从环境读取
+                  变量
+  --help 显示此消息并退出。
+
+命令：
+  与你的机器人在命令行
+  列表模型实例
+  重启重启模型实例
+  开始模型实例
+  停止停止模型实例
+```

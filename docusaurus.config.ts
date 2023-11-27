@@ -14,7 +14,15 @@ const config: Config = {
   onBrokenMarkdownLinks: "warn",
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "zh"],
+    localeConfigs: {
+      en: {
+        htmlLang: "en-US",
+      },
+      fa: {
+        htmlLang: "zh-CN",
+      },
+    },
   },
   themes: [
     [
@@ -78,7 +86,7 @@ const config: Config = {
           to: "/docs/use_cases/sql_generation_and_diagnosis",
         },
         // Please keep GitHub link to the right for consistency.
-
+        { type: "localeDropdown", position: "right" },
         {
           href: "https://github.com/eosphoros-ai/DB-GPT",
           position: "right",
