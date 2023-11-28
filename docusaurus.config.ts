@@ -14,13 +14,10 @@ const config: Config = {
   onBrokenMarkdownLinks: "warn",
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "zh"],
+    locales: ["en"],
     localeConfigs: {
       en: {
         htmlLang: "en-US",
-      },
-      fa: {
-        htmlLang: "zh-CN",
       },
     },
   },
@@ -44,7 +41,6 @@ const config: Config = {
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         blog: {
-          showReadingTime: true,
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
@@ -54,16 +50,16 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
     docs: {
-      sidebar: {
-        hideable: true,
-        autoCollapseCategories: true,
-      },
+      // sidebar: {
+      //   hideable: true,
+      //   autoCollapseCategories: true,
+      // },
     },
     navbar: {
+      hideOnScroll: true,
       logo: {
         alt: "DB-GPT Logo",
         src: "img/dbgpt_logo.png",
@@ -78,15 +74,16 @@ const config: Config = {
           label: "Docs",
           to: "/docs/overview",
         },
-        {
-          type: "docSidebar",
-          sidebarId: "use_case",
-          position: "left",
-          label: "Use Case",
-          to: "/docs/use_cases/sql_generation_and_diagnosis",
-        },
+        { showReadingTime: true, to: "/blog", label: "Blog", position: "left" },
+        // {
+        //   type: "docSidebar",
+        //   sidebarId: "use_case",
+        //   position: "left",
+        //   label: "Use Case",
+        //   to: "/docs/use_cases/sql_generation_and_diagnosis",
+        // },
         // Please keep GitHub link to the right for consistency.
-        { type: "localeDropdown", position: "right" },
+        // { type: "localeDropdown", position: "right" },
         {
           href: "https://github.com/eosphoros-ai/DB-GPT",
           position: "right",
@@ -139,10 +136,20 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} DB-GPT`,
+      logo: {
+        alt: "DB-GPT",
+        src: "img/dbgpt_logo.png",
+        srcDark: "img/dbgpt_logo.png",
+        width: 200,
+      },
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    announcementBar: {
+      content:
+        '⭐️ If you like DB-GPT, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/eosphoros-ai/DB-GPT">GitHub</a>! ⭐️',
     },
   } satisfies Preset.ThemeConfig,
 };
