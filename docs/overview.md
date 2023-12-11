@@ -2,7 +2,7 @@
 sidebar_position: 0
 ---
 
-# Overview
+# Overview111222444777
 DB-GPT is an **open-source framework for large language models(LLMs) in the databases fields**. It's purpose is to build infrastructure for the domain of large language models, making it easier and more convenient to develop applications around databases by developing various technical capabilities such as:
 
 -  **SMMF(Service-oriented Multi-model Management Framework)**
@@ -78,7 +78,7 @@ Fine-tuning module for Text2SQL/Text2DSL
 - [Connections](/docs/modules/connections) 
 Connect various data sources
 
-- [Obvervablity](/docs/operation_manual/advanced_tutorial/debugging)
+- [Obvervablity](/docs/operation/advanced_tutorial/debugging)
 Observing & monitoring
 
 - [Evaluation](/docs/modules/eval)
