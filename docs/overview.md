@@ -2,7 +2,7 @@
 sidebar_position: 0
 ---
 
-# Overview111222444777
+# Overview
 DB-GPT is an **open-source framework for large language models(LLMs) in the databases fields**. It's purpose is to build infrastructure for the domain of large language models, making it easier and more convenient to develop applications around databases by developing various technical capabilities such as:
 
 -  **SMMF(Service-oriented Multi-model Management Framework)**
