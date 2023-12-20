@@ -3,7 +3,7 @@
 
 # Production
 /build
-/auto-dep/DB-GPT
+/DB-GPT
 
 # Generated files
 .docusaurus
