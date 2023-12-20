@@ -62,6 +62,7 @@ const config: Config = {
         href: "https://dbgpt.site/",
       },
       items: [
+        // Docs
         {
           type: "docSidebar",
           sidebarId: "docs",
@@ -69,14 +70,8 @@ const config: Config = {
           label: "Docs",
           to: "/docs/overview",
         },
+        // Blog
         { showReadingTime: true, to: "/blog", label: "Blog", position: "left" },
-        // {
-        //   type: "docSidebar",
-        //   sidebarId: "use_case",
-        //   position: "left",
-        //   label: "Use Case",
-        //   to: "/docs/use_cases/sql_generation_and_diagnosis",
-        // },
         // Please keep GitHub link to the right for consistency.
         // { type: "localeDropdown", position: "right" },
         {
