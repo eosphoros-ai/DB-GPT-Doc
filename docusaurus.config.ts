@@ -72,6 +72,10 @@ const config: Config = {
         },
         // Blog
         { showReadingTime: true, to: "/blog", label: "Blog", position: "left" },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
         // Please keep GitHub link to the right for consistency.
         // { type: "localeDropdown", position: "right" },
         {
