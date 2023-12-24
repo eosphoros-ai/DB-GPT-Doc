@@ -2,6 +2,10 @@ import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
+const getVersionName = () => {
+  return "Current";
+};
+
 const config: Config = {
   title: "DB-GPT",
   tagline: "Revolutionizing Database Interactions with Private LLM Technology",
@@ -33,10 +37,15 @@ const config: Config = {
 
   presets: [
     [
-      "@docusaurus/preset-classic",
+      "classic",
       {
         docs: {
           sidebarPath: "./sidebars.ts",
+          versions: {
+            current: {
+              label: `${getVersionName()} 🚧`,
+            },
+          },
         },
 
         theme: {
@@ -73,8 +82,8 @@ const config: Config = {
         // Blog
         { showReadingTime: true, to: "/blog", label: "Blog", position: "left" },
         {
-          type: 'docsVersionDropdown',
-          position: 'right',
+          type: "docsVersionDropdown",
+          position: "right",
         },
         // Please keep GitHub link to the right for consistency.
         // { type: "localeDropdown", position: "right" },
