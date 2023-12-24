@@ -3,11 +3,14 @@ const Router = require("koa-router");
 const { createProjectAction } = require("./lib/core/action");
 const initProject = require("./lib/core/initProject");
 const { publishNewVersion } = require("./lib/core/action");
+const bodyParser = require('koa-bodyparser');
 
 require("dotenv").config();
 
 const app = new Koa();
 var router = new Router();
+
+app.use(bodyParser());
 
 router.get("/deploy", async (ctx, next) => {
   await createProjectAction();
@@ -20,17 +23,16 @@ router.post("/deploy", async (ctx, next) => {
 });
 
 router.get("/publish", async (ctx, next) => {
-  console.log("========", ctx.request.body);
-  const tag = ctx.request.body.tag;
+  
+  const tag = ctx?.request?.tag;
   await publishNewVersion(tag);
   ctx.body = "GET Success!";
 });
 
 router.post("/publish", async (ctx, next) => {
-  console.log('========', ctx.request.body);
-  const tag = ctx.request.body.tag;
+  const tag = ctx?.request.body?.tag;
   await publishNewVersion(tag);
-  ctx.body = "POST Success!";
+  ctx.body = ctx?.request.body;
 });
 
 app.use(router.routes()).use(router.allowedMethods());
