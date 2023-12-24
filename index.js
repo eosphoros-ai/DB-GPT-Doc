@@ -10,26 +10,26 @@ const app = new Koa();
 var router = new Router();
 
 router.get("/deploy", async (ctx, next) => {
-  console.log('========', ctx.request.body);
-  const tag = ctx.request.body.tag;
-  await createProjectAction(tag);
+  await createProjectAction();
   ctx.body = "GET Publish Success!";
 });
 
 router.post("/deploy", async (ctx, next) => {
-  console.log('========', ctx.request.body);
-  const tag = ctx.request.body.tag;
-  await createProjectAction(tag);
+  await createProjectAction();
   ctx.body = "POST Publish Success!";
 });
 
 router.get("/publish", async (ctx, next) => {
-  await publishNewVersion();
+  console.log("========", ctx.request.body);
+  const tag = ctx.request.body.tag;
+  await publishNewVersion(tag);
   ctx.body = "GET Success!";
 });
 
 router.post("/publish", async (ctx, next) => {
-  await publishNewVersion();
+  console.log('========', ctx.request.body);
+  const tag = ctx.request.body.tag;
+  await publishNewVersion(tag);
   ctx.body = "POST Success!";
 });
 
