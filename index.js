@@ -31,7 +31,9 @@ router.post("/publish", async (ctx, next) => {
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(process.env.APP_PORT, () => {
-  initProject();
-  console.log(`Service started successfully: http://localhost:${process.env.APP_PORT}`, );
+app.listen(process.env.APP_PORT, async () => {
+  await initProject();
+  console.log(
+    `Service started successfully: http://localhost:${process.env.APP_PORT}`
+  );
 });

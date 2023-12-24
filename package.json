@@ -5,6 +5,12 @@
   "workspaces": [
     "auto-dep"
   ],
+  "nodemonConfig": {
+    "ignore": [
+      "*"
+    ],
+    "delay": 2500
+  },
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
