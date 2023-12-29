@@ -1,9 +1,21 @@
+
 const Koa = require("koa");
 const Router = require("koa-router");
 const { createProjectAction } = require("./lib/core/action");
 const initProject = require("./lib/core/initProject");
 const { publishNewVersion } = require("./lib/core/action");
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require("koa-bodyparser");
+const winston = require("winston");
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { service: "user-service" },
+  transports: [
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
+  ],
+});
 
 require("dotenv").config();
 
@@ -13,17 +25,28 @@ var router = new Router();
 app.use(bodyParser());
 
 router.get("/deploy", async (ctx, next) => {
-  await createProjectAction();
+  try {
+    await createProjectAction();
+    logger.info("Automatic deployment code successful");
+  } catch (error) {
+    logger.info(`Automatic deployment code fail: ${error}`);
+  }
+
   ctx.body = "GET Publish Success!";
 });
 
 router.post("/deploy", async (ctx, next) => {
-  await createProjectAction();
+  try {
+    await createProjectAction();
+    logger.info("Automatic deployment code successful");
+  } catch (error) {
+    logger.info(`Automatic deployment code fail: ${error}`);
+  }
+
   ctx.body = "POST Publish Success!";
 });
 
 router.get("/publish", async (ctx, next) => {
-  
   const tag = ctx?.request?.tag;
   await publishNewVersion(tag);
   ctx.body = "GET Success!";
@@ -31,15 +54,24 @@ router.get("/publish", async (ctx, next) => {
 
 router.post("/publish", async (ctx, next) => {
   const tag = ctx?.request.body?.tag;
-  await publishNewVersion(tag);
+  try {
+    await publishNewVersion(tag);
+    logger.info(`versions ${tag} successful release!`);
+  } catch (error) {
+    logger.error(`versions ${tag} fail release, reason: ${error}`);
+  }
   ctx.body = ctx?.request.body;
 });
 
 app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(process.env.APP_PORT, async () => {
-  await initProject();
-  console.log(
-    `Service started successfully: http://localhost:${process.env.APP_PORT}`
-  );
+  try {
+    await initProject();
+    logger.info(
+      `Service started successfully: http://localhost:${process.env.APP_PORT}`
+    );
+  } catch (error) {
+    logger.error("Service started fail: ", error);
+  }
 });
