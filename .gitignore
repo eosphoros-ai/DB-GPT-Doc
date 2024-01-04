@@ -8,6 +8,8 @@
 # Generated files
 .docusaurus
 .cache-loader
+.combined.log
+.error.log
 
 # Misc
 .DS_Store
