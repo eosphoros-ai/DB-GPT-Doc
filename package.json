@@ -62,5 +62,6 @@
   },
   "engines": {
     "node": ">=18.0"
-  }
+  },
+  "repository": "https://github.com/eosphoros-ai/Docs.git"
 }

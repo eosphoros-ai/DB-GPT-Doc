@@ -19,7 +19,7 @@ router.get("/deploy", async (ctx, next) => {
     await createProjectAction();
     logger.info("Automatic deployment code successful");
   } catch (error) {
-    logger.info(`Automatic deployment code fail: ${error}`);
+    logger.error(`Automatic deployment code fail: ${error}`);
   }
 
   ctx.body = "GET Publish Success!";
