@@ -1,4 +1,3 @@
-
 const Koa = require("koa");
 const Router = require("koa-router");
 const { createProjectAction } = require("./lib/core/action");
@@ -6,6 +5,7 @@ const initProject = require("./lib/core/initProject");
 const { publishNewVersion } = require("./lib/core/action");
 const { logger } = require("./lib/utils/terminal");
 const bodyParser = require("koa-bodyparser");
+const { saveLog } = require("./lib/utils/spawnCommand");
 
 require("dotenv").config();
 
@@ -38,18 +38,32 @@ router.post("/deploy", async (ctx, next) => {
 
 router.get("/publish", async (ctx, next) => {
   const tag = ctx?.request?.tag;
-  await publishNewVersion(tag);
-  logger.info(`publish success Tag: ${tag}`);
+
+  // refs/tags/v0.4.5
+  if (!tag) {
+    saveLog(`tag is null time: ${new Date()}`);
+  }
+  const curVersion = tag.split("/")[2] || tag;
+
+  await publishNewVersion(curVersion);
+  logger.info(`publish success Tag: ${curVersion}`);
   ctx.body = "GET Success!";
 });
 
 router.post("/publish", async (ctx, next) => {
   const tag = ctx?.request.body?.tag;
+
+  if (!tag) {
+    saveLog(`tag is null time: ${new Date()}`);
+  }
+
+  const curVersion = tag.split("/")[2] || tag;
+
   try {
-    await publishNewVersion(tag);
-    logger.info(`versions ${tag} successful release!`);
+    await publishNewVersion(curVersion);
+    logger.info(`versions ${curVersion} successful release!`);
   } catch (error) {
-    logger.error(`versions ${tag} fail release, reason: ${error}`);
+    logger.error(`versions ${curVersion} fail release, reason: ${error}`);
   }
   ctx.body = ctx?.request.body;
 });

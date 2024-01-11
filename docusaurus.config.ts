@@ -38,9 +38,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
+          includeCurrentVersion: true,
           versions: {
             current: {
               label: `${getVersionSync()}`,
+              banner: "none",
             },
           },
         },
@@ -76,11 +78,27 @@ const config: Config = {
           label: "Docs",
           to: "/docs/overview",
         },
-        // Blog
-        { showReadingTime: true, to: "/blog", label: "Blog", position: "left" },
+
         {
           type: "docsVersionDropdown",
           position: "right",
+        },
+        {
+          href: "https://huggingface.co/eosphoros",
+          position: "right",
+          label: "HuggingFace",
+          className: "header-huggingface-link",
+        },
+        {
+          href: "https://www.yuque.com/eosphoros/dbgpt-docs/bex30nsv60ru0fmx",
+          position: "left",
+          label: "中文文档",
+        },
+        {
+          href: "https://github.com/eosphoros-ai/community",
+          position: "left",
+          label: "Community",
+          className: "header-community-link",
         },
         // Please keep GitHub link to the right for consistency.
         // { type: "localeDropdown", position: "right" },
