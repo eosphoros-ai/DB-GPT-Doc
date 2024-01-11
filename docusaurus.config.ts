@@ -118,7 +118,7 @@ const config: Config = {
           items: [
             {
               label: "Discord",
-              href: "https://discord.gg/erwfqcMP",
+              href: "https://discord.com/invite/7uQnPuveTY",
             },
             {
               label: "Dockerhub",
