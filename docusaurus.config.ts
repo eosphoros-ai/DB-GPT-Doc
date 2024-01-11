@@ -43,6 +43,7 @@ const config: Config = {
             current: {
               label: `${getVersionSync()}`,
               banner: "none",
+              path: 'latest'
             },
           },
         },
