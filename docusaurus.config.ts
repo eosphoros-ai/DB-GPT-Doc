@@ -154,12 +154,6 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} DB-GPT`,
-      logo: {
-        alt: "DB-GPT",
-        src: "img/dbgpt_logo.png",
-        srcDark: "img/dbgpt_logo.png",
-        width: 200,
-      },
     },
     prism: {
       theme: prismThemes.github,
