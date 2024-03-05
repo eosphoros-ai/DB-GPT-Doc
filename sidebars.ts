@@ -29,9 +29,164 @@ const sidebars = {
       label: "Quickstart",
       
     },
+
     {
-      type: "doc", 
-      id: "awel",
+      type: "category", 
+      label: "AWEL(Agentic Workflow Expression Language)",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: 'doc',
+          id: "awel/awel"
+        },
+        {
+          type: 'doc',
+          id: "awel/get_started"
+        },
+        {
+          type: "doc",
+          id: "awel/why_use_awel" 
+        },
+        {
+          type: "category",
+          label: "Cookbook",
+          items: [
+            {
+              type: "doc",
+              id: "awel/cookbook/quickstart_basic_awel_workflow"
+            },
+            // {
+            //   type: "doc",
+            //   id: "awel/cookbook/sql_awel_use_rag_and_schema_linking"
+            // },
+            // {
+            //   type: "doc",
+            //   id: "awel/cookbook/data_analysis_use_awel"
+            // },
+            {
+              type: "doc",
+              id: "awel/cookbook/multi_round_chat_withllm"
+            },
+          ],
+          link: {
+            type: 'generated-index',
+            description: 'Example code for accomplishing common workflow with the Agentic Workflow Expression Language (AWEL). These examples show how to build  different app use LLMs (the core AWEL interface) and dbgpt modules.',
+            slug: "awel/cookbook"
+          },
+        },
+        {
+          type: "category",
+          label: "AWEL Tutorial",
+          items: [
+            {
+              type: "category",
+              label: "1. Getting Started",
+              collapsed: false,
+              collapsible: false,
+              items: [
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/getting_started/1.1_hello_world"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/getting_started/1.2_how_works"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/getting_started/1.3_custom_operator"
+                },
+              ]
+            },
+            {
+              type: "category",
+              label: "2. Basic Syntax",
+              collapsed: false,
+              collapsible: false,
+              items: [
+                {
+                  type: "doc",
+                    id: "awel/awel_tutorial/basic_syntax/2.1_map_operator"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/basic_syntax/2.2_reduce_operator"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/basic_syntax/2.3_join_operator"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/basic_syntax/2.4_branch_operator"
+                },
+                {
+                    type: "doc",
+                    id: "awel/awel_tutorial/basic_syntax/2.5_streamify_operator"
+                },
+                {
+                    type: "doc",
+                    id: "awel/awel_tutorial/basic_syntax/2.6_unstreamify_operator"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/basic_syntax/2.7_transform_stream_operator"
+                },
+                {
+                    type: "doc",
+                    id: "awel/awel_tutorial/basic_syntax/2.8_input_operator"
+                },
+              ]
+            },
+            {
+              type: "category",
+              label: "3. Network Programming",
+              collapsed: false,
+              collapsible: false,
+              items: [
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/network_program/3.1_http_trigger"
+                },
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/network_program/3.2_http_trigger_get"
+                },
+                {
+                  "type": "doc",
+                  "id": "awel/awel_tutorial/network_program/3.3_http_trigger_post"
+                },
+                {
+                  "type": "doc",
+                  "id": "awel/awel_tutorial/network_program/3.4_http_trigger_streaming"
+                }
+              ]
+            },
+            {
+              type: "category",
+              label: "4. Advanced Guide",
+              collapsed: false,
+              collapsible: false,
+              items: [
+                {
+                  type: "doc",
+                  id: "awel/awel_tutorial/advanced_guide/4.1_lifecycle"
+                }
+              ]
+            },
+          ],
+          link: {
+            type: 'generated-index',
+            description: 'The Agentic Workflow Expression Language (AWEL) tutorial provides a comprehensive introduction to the language, including basic syntax, network programming, and advanced usage. The tutorial is designed to help you get started with AWEL and quickly build your own LLM programs.',
+            slug: "awel/tutorial"
+          },
+        }
+      ],
+      link: {
+        type: 'generated-index',
+        description: "AWEL (Agentic Workflow Expression Language) is an intelligent agent workflow expression language specifically designed for the development of large-model applications",
+      },
     },
 
     {
@@ -68,8 +223,12 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Adanced Usage',
+          label: 'Advanced Usage',
           items: [
+            {
+              type: 'doc',
+              id: 'installation/advanced_usage/More_proxyllms',
+            },
             {
               type: 'doc',
               id: 'installation/advanced_usage/vLLM_inference',
@@ -80,8 +239,6 @@ const sidebars = {
             },
           ],
         },
-
-
       ],
       link: {
         type: 'generated-index',
@@ -96,7 +253,14 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-
+        {
+          type: 'doc',
+          id: 'application/app_usage'
+        },
+        {
+          type: 'doc',
+          id: 'application/awel_flow_usage'
+        },
         {
           type: 'category',
           label: 'Getting Started Tutorial',
@@ -122,9 +286,27 @@ const sidebars = {
               id: 'application/started_tutorial/chat_dashboard',
             },
             {
-              type: 'doc',
-              id: 'application/started_tutorial/agent',
-            },
+              type: "category",
+              label: "Agents",
+              items: [
+                {
+                  type: 'doc',
+                  id: 'application/started_tutorial/agents/plugin',
+                },
+                {
+                  type: "doc",
+                  id: "application/started_tutorial/agents/db_data_analysis_agents",
+                },
+                {
+                  type: "doc",
+                  id: "application/started_tutorial/agents/crawl_data_analysis_agents",
+                }
+              ],
+              link: {
+                type: 'generated-index',
+                slug: "agents",
+              },
+            }
           ],
         },
         {
@@ -209,6 +391,39 @@ const sidebars = {
         },
         
       ],
+      link: {
+        type: 'generated-index',
+        slug: "modules",
+      },
+    },
+
+    {
+      type: "category",
+      label: "Development Guide",
+      collapsed: false,
+      items: [
+        {
+          type: 'category',
+          label: 'Agents',
+          items: [
+            {
+              type: 'doc',
+              id: 'cookbook/agents/codeagent_develop',
+            }
+          ],
+        },
+        {
+          type: 'category',
+          label: 'App',
+          items: [
+            {
+              type: 'doc',
+              id: 'cookbook/app/data_analysis_app_develop',
+            }
+          ],
+        }, 
+      ],
+
     },
 
     {
@@ -240,8 +455,23 @@ const sidebars = {
           type: 'doc',
           id: 'changelog/doc',
         },
+        {
+          type: 'doc',
+          id: 'changelog/Released_V0.5.0',
+        }
       ],
-  
+    },
+
+    {
+      type: "category",
+      label: "Upgrade",
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'upgrade/v0.5.0',
+        },
+      ],
     },
 
     {
