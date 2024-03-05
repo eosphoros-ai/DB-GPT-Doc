@@ -34,7 +34,7 @@ const config: Config = {
 
   presets: [
     [
-      "classic",
+      "@docusaurus/preset-classic",
       {
         docs: {
           sidebarPath: "./sidebars.ts",
@@ -43,11 +43,14 @@ const config: Config = {
             current: {
               label: `${getVersionSync()}`,
               banner: "none",
-              path: 'latest'
+              path: "latest",
             },
           },
         },
-
+        gtag: {
+          trackingID: "G-79K8PKYH5H",
+          anonymizeIP: true,
+        },
         theme: {
           customCss: "./src/css/custom.css",
         },
