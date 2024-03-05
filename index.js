@@ -42,6 +42,7 @@ router.get("/publish", async (ctx, next) => {
   // refs/tags/v0.4.5
   if (!tag) {
     saveLog(`tag is null time: ${new Date()}`);
+    return;
   }
   const curVersion = tag.split("/")[2] || tag;
 
