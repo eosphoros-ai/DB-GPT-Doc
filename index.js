@@ -41,7 +41,8 @@ router.get("/publish", async (ctx, next) => {
 
   // refs/tags/v0.4.5
   if (!tag) {
-    saveLog(`tag is null time: ${new Date()}`);
+    saveLog(`tag is null time, get request`);
+    ctx.body = "Publish Fail!";
     return;
   }
   const curVersion = tag.split("/")[2] || tag;
@@ -55,7 +56,9 @@ router.post("/publish", async (ctx, next) => {
   const tag = ctx?.request.body?.tag;
 
   if (!tag) {
-    saveLog(`tag is null time: ${new Date()}`);
+    saveLog(`tag is null time post request!`);
+    ctx.body = "Publish Fail!";
+    return;
   }
 
   const curVersion = tag.split("/")[2] || tag;
