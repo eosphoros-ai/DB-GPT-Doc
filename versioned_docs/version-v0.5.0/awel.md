@@ -1,4 +1,4 @@
-# What is AWEL? 
+# AWEL(Agentic Workflow Expression Language)
 
 Agentic Workflow Expression Language(AWEL) is a set of intelligent agent workflow expression language specially designed for large model application
 development. It provides great functionality and flexibility. Through the AWEL API, you can focus on the development of business logic for LLMs applications
@@ -123,7 +123,7 @@ END;
     - BranchOperator
     - InputOperator
     - TriggerOperator
-- **Stream Operators**
+- ** Stream Operators**
     - StreamifyAbsOperator
     - UnstreamifyAbsOperator
     - TransformStreamAbsOperator
