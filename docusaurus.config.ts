@@ -39,6 +39,7 @@ const config: Config = {
         docs: {
           sidebarPath: "./sidebars.ts",
           includeCurrentVersion: true,
+          lastVersion: "current",
           versions: {
             current: {
               label: `${getVersionSync()}`,
