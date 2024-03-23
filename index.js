@@ -81,6 +81,6 @@ app.listen(process.env.APP_PORT, async () => {
       `Service started successfully: http://localhost:${process.env.APP_PORT}`
     );
   } catch (error) {
-    logger.error("Service started fail: ", error);
+    logger.error("Service start fail: ", error);
   }
 });
