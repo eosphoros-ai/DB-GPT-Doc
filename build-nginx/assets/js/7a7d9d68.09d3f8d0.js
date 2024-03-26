@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7863],{4500:e=>{e.exports=JSON.parse('{"label":"DB-GPT","permalink":"/blog/tags/db-gpt","allTagsPath":"/blog/tags","count":1,"unlisted":false}')}}]);
