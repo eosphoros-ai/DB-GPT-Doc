@@ -166,9 +166,13 @@ Return <a href="#the-app-object">App Object</a> List
 
 ### The App Model
 ________
+<b>id</b> <font color="gray"> string </font>
+
+space id
+________
 <b>app_code</b> <font color="gray"> string </font>
 
-unique app id
+app code
 ________
 <b>app_name</b> <font color="gray"> string </font>
 
