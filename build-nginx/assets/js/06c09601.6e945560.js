@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2012],{2705:e=>{e.exports=JSON.parse('{"title":"Modules","slug":"modules","permalink":"/docs/latest/modules","navigation":{"previous":{"title":"Knowledge","permalink":"/docs/latest/api/knowledge"},"next":{"title":"SMMF","permalink":"/docs/latest/modules/smmf"}}}')}}]);
