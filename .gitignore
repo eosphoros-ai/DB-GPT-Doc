@@ -4,6 +4,7 @@
 # Production
 /build
 /DB-GPT
+/build-nginx
 
 # Generated files
 .docusaurus
